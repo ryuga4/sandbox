@@ -1,0 +1,146 @@
+	Fri Dec  4 01:50 2020 Time and Allocation Profiling Report  (Final)
+
+	   sandbox-exe +RTS -N4 -p -N1 -RTS
+
+	total time  =        1.44 secs   (1444 ticks @ 1000 us, 1 processor)
+	total alloc = 3,524,038,104 bytes  (excludes profiling overheads)
+
+COST CENTRE                             MODULE                      SRC                                              %time %alloc
+
+allPossibilities.allPossibilities'      Lib                         src/Lib.hs:(128,9)-(132,86)                       31.6   47.7
+matching                                Lib                         src/Lib.hs:144:1-57                               29.4   15.4
+getCells                                Lib                         src/Lib.hs:(151,1)-(152,102)                      18.7   15.2
+allPossibilities                        Lib                         src/Lib.hs:(126,1)-(132,86)                       10.6   17.6
+allPossibilities.allPossibilities'.part Lib                         src/Lib.hs:131:17-86                               1.9    1.4
+checkRestriction                        Lib                         src/Lib.hs:148:1-117                               1.8    0.0
+rdeepseq                                Control.Parallel.Strategies Control/Parallel/Strategies.hs:450:1-38            1.5    0.4
+parEval                                 Control.Parallel.Strategies Control/Parallel/Strategies.hs:(513,1)-(518,28)    1.4    0.5
+
+
+                                                                                                                                                     individual      inherited
+COST CENTRE                                           MODULE                      SRC                                             no.     entries  %time %alloc   %time %alloc
+
+MAIN                                                  MAIN                        <built-in>                                      266          0    0.0    0.0   100.0  100.0
+ CAF                                                  GHC.Conc.Signal             <entire-module>                                 381          0    0.0    0.0     0.0    0.0
+ CAF                                                  GHC.IO.Encoding             <entire-module>                                 366          0    0.0    0.0     0.0    0.0
+ CAF                                                  GHC.IO.Encoding.Iconv       <entire-module>                                 364          0    0.0    0.0     0.0    0.0
+ CAF                                                  GHC.IO.Handle.FD            <entire-module>                                 356          0    0.0    0.0     0.0    0.0
+ CAF                                                  GHC.IO.Handle.Text          <entire-module>                                 354          0    0.0    0.0     0.0    0.0
+ CAF                                                  GHC.Event.Thread            <entire-module>                                 314          0    0.0    0.0     0.0    0.0
+ CAF                                                  GHC.Event.Poll              <entire-module>                                 284          0    0.0    0.0     0.0    0.0
+ CAF:$fApplicativeEval3                               Control.Parallel.Strategies <no location info>                              461          0    0.0    0.0     0.0    0.0
+  liftA2                                              Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:22-32        556          1    0.0    0.0     0.0    0.0
+ CAF:$fApplicativeEval5                               Control.Parallel.Strategies <no location info>                              463          0    0.0    0.0     0.0    0.0
+  pure                                                Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:22-32        566          1    0.0    0.0     0.0    0.0
+ CAF:$fFunctorEval2                                   Control.Parallel.Strategies <no location info>                              465          0    0.0    0.0     0.0    0.0
+  fmap                                                Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:13-19        568          1    0.0    0.0     0.0    0.0
+ CAF:$fMonadEval1                                     Control.Parallel.Strategies <no location info>                              456          0    0.0    0.0     0.0    0.0
+  return                                              Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:35-39        564          1    0.0    0.0     0.0    0.0
+ CAF:$fMonadEval2                                     Control.Parallel.Strategies <no location info>                              457          0    0.0    0.0     0.0    0.0
+  >>                                                  Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:35-39        570          1    0.0    0.0     0.0    0.0
+ CAF:$fMonadEval3                                     Control.Parallel.Strategies <no location info>                              458          0    0.0    0.0     0.0    0.0
+  >>=                                                 Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:35-39        561          1    0.0    0.0     0.0    0.0
+ CAF:$fMonadLogicLogicT4                              Control.Monad.Logic         <no location info>                              424          0    0.0    0.0     0.0    0.0
+  mzero                                               Control.Monad.Logic         Control/Monad/Logic.hs:167:5-32                 609          1    0.0    0.0     0.0    0.0
+ CAF:board                                            Lib                         src/Lib.hs:15:1-5                               499          0    0.0    0.0     0.0    0.0
+  board                                               Lib                         src/Lib.hs:15:1-62                              537          1    0.0    0.0     0.0    0.0
+ CAF:checkGame_ds                                     Lib                         <no location info>                              502          0    0.0    0.0     0.0    0.0
+  checkGame                                           Lib                         src/Lib.hs:155:1-219                            550          0    0.0    0.0     0.0    0.0
+   parMap                                             Control.Parallel.Strategies Control/Parallel/Strategies.hs:616:1-48         551          0    0.0    0.0     0.0    0.0
+    rparWith                                          Control.Parallel.Strategies Control/Parallel/Strategies.hs:494:1-32         558          1    0.0    0.0     0.0    0.0
+ CAF:main                                             Main                        app/Main.hs:6:1-4                               531          0    0.0    0.0     0.0    0.0
+  main                                                Main                        app/Main.hs:6:1-35                              532          1    0.0    0.0     0.0    0.0
+   pp                                                 Lib                         src/Lib.hs:(112,1)-(113,75)                     533          1    0.0    0.0     0.0    0.0
+    ppRow                                             Lib                         src/Lib.hs:109:1-125                            632         15    0.0    0.0     0.0    0.0
+ CAF:main1                                            Main                        <no location info>                              530          0    0.0    0.0    99.9  100.0
+  main                                                Main                        app/Main.hs:6:1-35                              536          0    0.0    0.0    99.9  100.0
+   solve                                              Lib                         src/Lib.hs:(159,1)-(171,44)                     538          1    0.0    0.0    99.9  100.0
+    observe                                           Control.Monad.Logic         Control/Monad/Logic.hs:122:1-76                 539          1    0.0    0.0    99.9  100.0
+     solve.go                                         Lib                         src/Lib.hs:(163,9)-(171,44)                     541       2082    0.0    0.0    99.9  100.0
+      solve.go.values                                 Lib                         src/Lib.hs:165:17-112                           542       2081    0.0    0.0    99.9  100.0
+       solve.go.values.\                              Lib                         src/Lib.hs:165:77-97                            581       4162    0.2    0.2     0.2    0.2
+       solve.go.values.\                              Lib                         src/Lib.hs:165:40-61                            543       4162    0.0    0.0    99.7   99.8
+        checkGame                                     Lib                         src/Lib.hs:155:1-219                            544       4162    0.0    0.0    99.7   99.8
+         parMap                                       Control.Parallel.Strategies Control/Parallel/Strategies.hs:616:1-48         545       4162    0.7    0.7    99.6   99.7
+          checkGame.\                                 Lib                         src/Lib.hs:155:95-204                           575      87526    0.2    0.2    94.2   97.6
+           checkRestriction                           Lib                         src/Lib.hs:148:1-117                            576      87526    1.8    0.0    75.3   82.2
+            matching                                  Lib                         src/Lib.hs:144:1-57                             582    2263878   29.4   15.4    29.4   15.4
+            allPossibilities                          Lib                         src/Lib.hs:(126,1)-(132,86)                     577      87526   10.6   17.6    44.0   66.7
+             allPossibilities.allPossibilities'       Lib                         src/Lib.hs:(128,9)-(132,86)                     578    3504718   31.6   47.7    33.4   49.1
+              allPossibilities.allPossibilities'.part Lib                         src/Lib.hs:131:17-86                            583    2985221    1.9    1.4     1.9    1.4
+           getCells                                   Lib                         src/Lib.hs:(151,1)-(152,102)                    584      87526   18.7   15.2    18.7   15.2
+          using                                       Control.Parallel.Strategies Control/Parallel/Strategies.hs:338:1-35         546       4162    0.0    0.0     3.3    0.8
+           runEval                                    Control.Parallel.Strategies Control/Parallel/Strategies.hs:219:1-42         548          0    0.3    0.0     3.3    0.8
+            unEval_                                   Control.Parallel.Strategies Control/Parallel/Strategies.hs:210:24-30        549      91688    0.0    0.0     0.0    0.0
+            liftA2                                    Control.Parallel.Strategies Control/Parallel/Strategies.hs:211:22-32        557          0    0.5    0.2     3.0    0.8
+             rparWith                                 Control.Parallel.Strategies Control/Parallel/Strategies.hs:494:1-32         562          0    0.0    0.0     2.6    0.6
+              parEval                                 Control.Parallel.Strategies Control/Parallel/Strategies.hs:(513,1)-(518,28) 563          0    1.2    0.3     2.1    0.6
+               parEval.r                              Control.Parallel.Strategies Control/Parallel/Strategies.hs:518:5-28         567      87526    0.9    0.3     0.9    0.3
+              rdeepseq                                Control.Parallel.Strategies Control/Parallel/Strategies.hs:450:1-38         571          0    0.5    0.1     0.5    0.1
+          rparWith                                    Control.Parallel.Strategies Control/Parallel/Strategies.hs:494:1-32         559          0    0.1    0.1     1.4    0.6
+           parEval                                    Control.Parallel.Strategies Control/Parallel/Strategies.hs:(513,1)-(518,28) 560     124860    0.2    0.2     0.2    0.2
+           rdeepseq                                   Control.Parallel.Strategies Control/Parallel/Strategies.hs:450:1-38         569      87526    1.0    0.3     1.0    0.3
+            rseq                                      Control.Parallel.Strategies Control/Parallel/Strategies.hs:429:1-26         572      87526    0.0    0.0     0.0    0.0
+         checkGame.\                                  Lib                         src/Lib.hs:155:95-204                           579          0    0.1    0.0     0.1    0.0
+          height                                      Lib                         src/Lib.hs:22:1-40                              580       4162    0.0    0.0     0.0    0.0
+          width                                       Lib                         src/Lib.hs:19:1-39                              586       2648    0.0    0.0     0.0    0.0
+      interleave                                      Control.Monad.Logic.Class   Control/Monad/Logic/Class.hs:(85,5)-(86,82)     587        301    0.0    0.0     0.1    0.0
+       >>=                                            Control.Monad.Logic         Control/Monad/Logic.hs:158:5-80                 588        301    0.0    0.0     0.0    0.0
+        >>=.\                                         Control.Monad.Logic         Control/Monad/Logic.hs:158:34-80                589          1    0.0    0.0     0.0    0.0
+         unLogicT                                     Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 590          1    0.0    0.0     0.0    0.0
+         msplit                                       Control.Monad.Logic         Control/Monad/Logic.hs:(190,5)-(192,56)         593          0    0.0    0.0     0.0    0.0
+          lift                                        Control.Monad.Logic         Control/Monad/Logic.hs:182:5-51                 594          0    0.0    0.0     0.0    0.0
+           lift.\                                     Control.Monad.Logic         Control/Monad/Logic.hs:182:33-51                595          1    0.0    0.0     0.0    0.0
+            lift.\.\                                  Control.Monad.Logic         Control/Monad/Logic.hs:182:45-51                596          1    0.0    0.0     0.0    0.0
+             >>=.\.\                                  Control.Monad.Logic         Control/Monad/Logic.hs:158:56-76                597          1    0.0    0.0     0.0    0.0
+              interleave.\                            Control.Monad.Logic.Class   Control/Monad/Logic/Class.hs:86:48-81           626          1    0.0    0.0     0.0    0.0
+               mplus                                  Control.Monad.Logic         Control/Monad/Logic.hs:168:5-73                 627          1    0.0    0.0     0.0    0.0
+                mplus.\                               Control.Monad.Logic         Control/Monad/Logic.hs:168:40-73                628          1    0.0    0.0     0.0    0.0
+                 return                               Control.Monad.Logic         Control/Monad/Logic.hs:157:5-41                 630          1    0.0    0.0     0.0    0.0
+                  return.\                            Control.Monad.Logic         Control/Monad/Logic.hs:157:35-41                631          1    0.0    0.0     0.0    0.0
+                 unLogicT                             Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 629          1    0.0    0.0     0.0    0.0
+              unLogicT                                Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 598          1    0.0    0.0     0.0    0.0
+       msplit                                         Control.Monad.Logic         Control/Monad/Logic.hs:(190,5)-(192,56)         591        301    0.1    0.0     0.1    0.0
+        lift                                          Control.Monad.Logic         Control/Monad/Logic.hs:182:5-51                 592        301    0.0    0.0     0.0    0.0
+        unLogicT                                      Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 599        301    0.0    0.0     0.0    0.0
+        >>=                                           Control.Monad.Logic         Control/Monad/Logic.hs:158:5-80                 601          0    0.0    0.0     0.0    0.0
+         >>=.\                                        Control.Monad.Logic         Control/Monad/Logic.hs:158:34-80                602        300    0.0    0.0     0.0    0.0
+          unLogicT                                    Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 603        300    0.0    0.0     0.0    0.0
+          lift                                        Control.Monad.Logic         Control/Monad/Logic.hs:182:5-51                 604          0    0.0    0.0     0.0    0.0
+           lift.\                                     Control.Monad.Logic         Control/Monad/Logic.hs:182:33-51                605        300    0.0    0.0     0.0    0.0
+            lift.\.\                                  Control.Monad.Logic         Control/Monad/Logic.hs:182:45-51                606        300    0.0    0.0     0.0    0.0
+             >>=.\.\                                  Control.Monad.Logic         Control/Monad/Logic.hs:158:56-76                607        300    0.0    0.0     0.0    0.0
+              unLogicT                                Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 608        300    0.0    0.0     0.0    0.0
+              interleave.\                            Control.Monad.Logic.Class   Control/Monad/Logic/Class.hs:86:48-81           619          6    0.0    0.0     0.0    0.0
+               mplus                                  Control.Monad.Logic         Control/Monad/Logic.hs:168:5-73                 620          6    0.0    0.0     0.0    0.0
+                mplus.\                               Control.Monad.Logic         Control/Monad/Logic.hs:168:40-73                621          6    0.0    0.0     0.0    0.0
+                 return                               Control.Monad.Logic         Control/Monad/Logic.hs:157:5-41                 623          6    0.0    0.0     0.0    0.0
+                  return.\                            Control.Monad.Logic         Control/Monad/Logic.hs:157:35-41                624          6    0.0    0.0     0.0    0.0
+                   msplit.ssk                         Control.Monad.Logic         Control/Monad/Logic.hs:192:6-56                 625          6    0.0    0.0     0.0    0.0
+                 unLogicT                             Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 622          6    0.0    0.0     0.0    0.0
+              mzero                                   Control.Monad.Logic         Control/Monad/Logic.hs:167:5-32                 613          0    0.0    0.0     0.0    0.0
+               mzero.\                                Control.Monad.Logic         Control/Monad/Logic.hs:167:31-32                614         62    0.0    0.0     0.0    0.0
+              return                                  Control.Monad.Logic         Control/Monad/Logic.hs:157:5-41                 616          0    0.0    0.0     0.0    0.0
+               return.\                               Control.Monad.Logic         Control/Monad/Logic.hs:157:35-41                617          1    0.0    0.0     0.0    0.0
+                msplit.ssk                            Control.Monad.Logic         Control/Monad/Logic.hs:192:6-56                 618          1    0.0    0.0     0.0    0.0
+        mzero                                         Control.Monad.Logic         Control/Monad/Logic.hs:167:5-32                 610          0    0.0    0.0     0.0    0.0
+         mzero.\                                      Control.Monad.Logic         Control/Monad/Logic.hs:167:31-32                611        232    0.0    0.0     0.0    0.0
+      solve.go.r1                                     Lib                         src/Lib.hs:169:30-42                            600        301    0.0    0.0     0.0    0.0
+      solve.go.r2                                     Lib                         src/Lib.hs:170:30-42                            612        294    0.0    0.0     0.0    0.0
+      return                                          Control.Monad.Logic         Control/Monad/Logic.hs:157:5-41                 615          1    0.0    0.0     0.0    0.0
+     unLogicT                                         Control.Monad.Logic         Control/Monad/Logic.hs:73:14-21                 540          1    0.0    0.0     0.0    0.0
+ CAF:parList                                          Control.Parallel.Strategies Control/Parallel/Strategies.hs:552:1-7          479          0    0.0    0.0     0.0    0.0
+  parList                                             Control.Parallel.Strategies Control/Parallel/Strategies.hs:552:1-24         552          1    0.0    0.0     0.0    0.0
+ CAF:poly_z_rbEq                                      Control.Parallel.Strategies <no location info>                              478          0    0.0    0.0     0.0    0.0
+ CAF:pp1                                              Lib                         <no location info>                              498          0    0.0    0.0     0.0    0.0
+ CAF:rs''                                             Lib                         src/Lib.hs:61:1-4                               497          0    0.0    0.0     0.0    0.0
+  rs''                                                Lib                         src/Lib.hs:(61,1)-(95,9)                        553          1    0.0    0.0     0.0    0.0
+   mkRestricitons                                     Lib                         src/Lib.hs:(99,1)-(102,120)                     554          1    0.0    0.0     0.0    0.0
+    mkRestricitons.h                                  Lib                         src/Lib.hs:102:9-120                            565          1    0.0    0.0     0.0    0.0
+     mkRestricitons.h.\                               Lib                         src/Lib.hs:102:28-54                            585         15    0.0    0.0     0.0    0.0
+    mkRestricitons.v                                  Lib                         src/Lib.hs:101:9-73                             555          1    0.0    0.0     0.0    0.0
+     mkRestricitons.v.\                               Lib                         src/Lib.hs:101:28-51                            574         15    0.0    0.0     0.0    0.0
+ CAF:runEval                                          Control.Parallel.Strategies Control/Parallel/Strategies.hs:219:1-7          466          0    0.0    0.0     0.0    0.0
+  runEval                                             Control.Parallel.Strategies Control/Parallel/Strategies.hs:219:1-42         547          1    0.0    0.0     0.0    0.0
+ main                                                 Main                        app/Main.hs:6:1-35                              534          0    0.0    0.0     0.1    0.0
+  pp                                                  Lib                         src/Lib.hs:(112,1)-(113,75)                     535          0    0.1    0.0     0.1    0.0
