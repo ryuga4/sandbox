@@ -3,7 +3,9 @@ module Main where
 import Lib
 
 main :: IO ()
-main = pp $ solve (Game board rs'')
+main = do
+    putStrLn "siema"
+    solve (Game board rs'') >>= pp
 
 
 

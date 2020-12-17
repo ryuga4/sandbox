@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3ea7d50a3aa314327e722a84b88bb88ca4b380194b36349fc83ffa678853520b
+-- hash: 9fed9dbd7c57d2df20efd6cd59b8ca6ec011901ee4576c5ec6d6d704adf844bb
 
 name:           sandbox
 version:        0.1.0.0
@@ -35,6 +35,7 @@ library
   build-depends:
       array
     , base >=4.7 && <5
+    , containers
     , logict
     , parallel
   default-language: Haskell2010
@@ -49,6 +50,7 @@ executable sandbox-exe
   build-depends:
       array
     , base >=4.7 && <5
+    , containers
     , logict
     , parallel
     , sandbox
@@ -65,6 +67,7 @@ test-suite sandbox-test
   build-depends:
       array
     , base >=4.7 && <5
+    , containers
     , logict
     , parallel
     , sandbox
