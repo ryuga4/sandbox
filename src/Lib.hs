@@ -14,6 +14,8 @@ import Control.Applicative
 import Data.IORef
 import Control.Exception
 import Data.Foldable
+import Data.Bifunctor
+import Control.Concurrent
 import qualified Data.Map as M
 type Board = A.Array (Int,Int) (Maybe Bool)
 
@@ -156,19 +158,19 @@ rs'' = mkRestricitons
 mkRestricitons :: [[Int]] -> [[Int]] -> [Restriction]
 mkRestricitons horizontal vertical = v ++ h
     where
-        v = map (\(i,x) -> Restriction x Vertical i) $ zip [0..] vertical
-        h = map (\(i,x) -> Restriction x  Horizontal i) $ zip [length horizontal -1, length horizontal -2..]  horizontal
+        v = zipWith (\i x -> Restriction x Vertical i) [0..] vertical
+        h = zipWith (\i x -> Restriction x  Horizontal i) [length horizontal -1, length horizontal -2..]  horizontal
 
 
 
 
 
 ppRow :: Board -> Int -> String
-ppRow b x = intersperse ' ' [case a of Nothing -> '_'; Just True -> 'X'; Just False -> '_' | ((_,i),a) <- A.assocs b, i == x]
+ppRow b x = intersperse ' ' [case a of Nothing -> '_'; Just True -> 'X'; Just False -> ' ' | ((_,i),a) <- A.assocs b, i == x]
 
 pp :: Board -> IO ()
 pp b = do
-    hPutStrLn stdout $ concat $ intersperse "\n" $ map (ppRow b) $ let rcount = snd (snd $ A.bounds b) in [rcount,rcount-1..0]
+    putStrLn $ intercalate "\n" $ map (ppRow b) $ let rcount = snd (snd $ A.bounds b) in [rcount,rcount-1..0]
     
 
 data Direction = Vertical | Horizontal deriving (Eq,Show)
@@ -187,7 +189,7 @@ allPossibilities seq size = map (take size) $ allPossibilities' seq size
         allPossibilities' [] size = pure $ replicate size False
         allPossibilities' (sequence:sequences) size = do
             start <- [0..size-sequence]
-            let part = (replicate start False) ++ (replicate sequence True) ++ [False]
+            let part = replicate start False ++ replicate sequence True ++ [False]
             map (part++) $ allPossibilities' sequences (size - (start + sequence + 1))
 
 
@@ -197,11 +199,17 @@ allPossibilities seq size = map (take size) $ allPossibilities' seq size
 certainCellsForRestriction :: Board -> Restriction -> M.Map (Int,Int) Bool
 certainCellsForRestriction b (Restriction seq dir x) = 
     let possibilities = allPossibilities seq (case dir of Vertical -> height b; Horizontal -> width b)  
-        matchingPossibilities = filter (flip matching (getCells b dir x)) possibilities
-        dicts = map M.fromList $ map (case dir of Vertical -> zip (zip (repeat x) [height b - 1, height b - 2..]); Horizontal -> zip (zip [0..] (repeat x))) matchingPossibilities
+        matchingPossibilities = filter (`matching` getCells b dir x) possibilities
+        dicts =  map
+                    (M.fromList
+                        . (case dir of
+                            Vertical -> zip (zip (repeat x) [height b - 1, height b - 2 .. ])
+                            Horizontal -> zip (zip [0 .. ] (repeat x))))
+                    matchingPossibilities
         subtractDict :: (Ord a, Eq b) => M.Map a b -> M.Map a b -> M.Map a b
         subtractDict a b = M.filterWithKey (\k v-> M.lookup k b == Just v) a
     in if null matchingPossibilities then mempty else foldr1 subtractDict dicts
+
 
 
 
@@ -214,11 +222,11 @@ restrictionForColumn (Game _ restrictions) col = find (\r@(Restriction _ d x) ->
 
 
 matching :: [Bool] -> [Maybe Bool] -> Bool
-matching as bs = all id [a==b | (a, Just b) <- zip as bs]
+matching as bs = and [a==b | (a, Just b) <- zip as bs]
 
 
 checkRestriction :: Restriction -> [Maybe Bool] -> Int -> Bool
-checkRestriction (Restriction sequences _ _) cells size = any (flip matching cells) $ allPossibilities sequences size
+checkRestriction (Restriction sequences _ _) cells size = any (`matching` cells) $ allPossibilities sequences size
 
 getCells :: Board -> Direction -> Int -> [Maybe Bool]
 getCells _board Vertical x = reverse $ map snd $ sortOn fst [(y',a) | ((x',y'),a) <- A.assocs _board, x' == x]
@@ -230,28 +238,34 @@ checkGame (Game _board _restrictions) = all (\r@(Restriction _ dir x) -> checkRe
 
 solve :: Game -> IO Board
 solve (Game _b _rs) = do
-    observeT $ (go _b)
+    observeT $ go _b
     where 
         go :: Board -> LogicT IO Board
-        go b    | all (/=Nothing) $ A.elems b = return b  
+        go b    | Nothing `notElem` b = return b  
                 | otherwise = do
-                    liftIO (progressBar b)
-                    
-                    v <- foldl interleave mempty $ sequence [fillCertainCells, dfs] b
+                    liftIO $ do
+                        pp b
+                        threadDelay (10 * 1000)
+                        putStrLn "\n"
+
+                    v <- foldl interleave mempty $ sequence
+                        [ fillCertainCells
+                        , dfs
+                        ] b
                     go v
         
 
         progressBar :: Board -> IO ()
         progressBar b = do
-            let n = length $ filter (\(i,v) -> v /= Nothing) $ A.assocs b
-            let successLength = floor (40.0 * ((\(x,y) -> fromIntegral @Int @Double n / fromIntegral @Int @Double (x*y)) $ snd $ A.bounds _b))
+            let n = length $ filter ((Nothing/=) . snd) $ A.assocs b
+            let successLength = floor (40.0 * (let (x,y) = snd $ A.bounds _b in fromIntegral @Int @Double n / fromIntegral @Int @Double (x*y)))
         
             liftIO $ putStrLn (replicate successLength '=' ++ replicate (40-successLength) '_')
             
 
         dfs :: Board -> LogicT IO Board
         dfs b = do            
-            (ix:_) <- return $ map (\(k,_) -> k) $ filter (\(k,v) -> v == Nothing) $ A.assocs b            
+            (ix:_) <- return $ map fst $ filter ((Nothing ==) . snd) $ A.assocs b            
             v <- msum [pure True, pure False]            
             let newBoard = b A.// [(ix, Just v)]
             guard (checkGame (Game newBoard _rs))
@@ -259,8 +273,16 @@ solve (Game _b _rs) = do
 
         fillCertainCells :: Board -> LogicT IO Board
         fillCertainCells b = do
-            let certainCells = (map (\(a,b) -> (a,Just b)) $ M.toList $ foldl1 M.union $ map (certainCellsForRestriction b) _rs)
-            guard (any (\(i,v) -> b A.! i == Nothing) certainCells)
-            return $ (b A.// certainCells)
+            let certainCells = map (second Just) $ M.toList $ foldl1 M.union $ map (certainCellsForRestriction b) _rs
+            guard (any ((Nothing ==) . (b A.!) . fst) certainCells)
+            return (b A.// certainCells)
+
+
+
+        fillCertainCell :: Board -> LogicT IO Board
+        fillCertainCell b = do
+            let certainCells = [(a,Just b) | (a,b) <- concatMap (M.toList . certainCellsForRestriction b) _rs]
+            cell <- mconcat $ map pure $ filter ((Nothing ==) . (b A.!) . fst) certainCells
+            return (b A.// [cell])
             
 
